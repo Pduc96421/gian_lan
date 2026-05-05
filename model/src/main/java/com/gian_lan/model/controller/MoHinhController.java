@@ -3,6 +3,7 @@ package com.gian_lan.model.controller;
 import com.gian_lan.model.dto.ApiResponse;
 import com.gian_lan.model.dto.KetQuaTrainRequest;
 import com.gian_lan.model.entity.MoHinh;
+import com.gian_lan.model.entity.TkMoHinh;
 import com.gian_lan.model.service.MoHinhService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -59,5 +60,17 @@ public class MoHinhController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.fail(400, e.getMessage()));
         }
+    }
+
+    @GetMapping("/statistics")
+    public ResponseEntity<ApiResponse<List<TkMoHinh>>> layThongKeTatCaMoHinh() {
+        return ResponseEntity.ok(ApiResponse.ok(moHinhService.layThongKeTatCaMoHinh()));
+    }
+
+    @GetMapping("/{id}/statistics")
+    public ResponseEntity<ApiResponse<TkMoHinh>> layThongKeChiTiet(@PathVariable String id) {
+        return moHinhService.layThongKeChiTiet(id)
+                .map(tk -> ResponseEntity.ok(ApiResponse.ok(tk)))
+                .orElse(ResponseEntity.ok(ApiResponse.fail(404, "Không tìm thấy thống kê cho mô hình")));
     }
 }

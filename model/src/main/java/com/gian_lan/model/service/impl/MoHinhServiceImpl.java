@@ -6,19 +6,67 @@ import com.gian_lan.model.entity.MoHinhMau;
 import com.gian_lan.model.entity.TrangThaiMoHinh;
 import com.gian_lan.model.repository.MoHinhRepository;
 import com.gian_lan.model.service.MoHinhService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import com.gian_lan.model.client.DetectServiceClient;
+import com.gian_lan.model.dto.ApiResponse;
+import com.gian_lan.model.entity.TkMoHinh;
+import org.springframework.beans.BeanUtils;
+
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class MoHinhServiceImpl implements MoHinhService {
 
     private final MoHinhRepository moHinhRepository;
+    private final DetectServiceClient detectServiceClient;
 
-    public MoHinhServiceImpl(MoHinhRepository moHinhRepository) {
+    public MoHinhServiceImpl(MoHinhRepository moHinhRepository, DetectServiceClient detectServiceClient) {
         this.moHinhRepository = moHinhRepository;
+        this.detectServiceClient = detectServiceClient;
+    }
+
+    @Override
+    public List<TkMoHinh> layThongKeTatCaMoHinh() {
+        return moHinhRepository.findAll().stream()
+                .map(this::mapToTkMoHinh)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<TkMoHinh> layThongKeChiTiet(String id) {
+        return moHinhRepository.findById(id).map(this::mapToTkMoHinh);
+    }
+
+    private TkMoHinh mapToTkMoHinh(MoHinh moHinh) {
+        TkMoHinh tk = new TkMoHinh();
+        BeanUtils.copyProperties(moHinh, tk);
+        tk.setTongSoLuongMau(moHinh.getMoHinhMaus() != null ? moHinh.getMoHinhMaus().size() : 0);
+        
+        try {
+            log.info("==> [Model -> Detect] Bắt đầu gọi detect-service để lấy thống kê vận hành cho model ID: {}", moHinh.getId());
+            
+            // Gọi detect-service qua Feign Client
+            ApiResponse<Map<String, Object>> response = detectServiceClient.getOperationalStats(moHinh.getId());
+            
+            if (response != null && response.getResult() != null) {
+                Map<String, Object> stats = response.getResult();
+                tk.setSoCaThiSuDung(((Number) stats.getOrDefault("soCaThiSuDung", 0)).intValue());
+                tk.setSoPhatHienViPham(((Number) stats.getOrDefault("soPhatHienViPham", 0)).intValue());
+                log.info("<== [Model <- Detect] Nhận kết quả thống kê thành công cho model ID: {}", moHinh.getId());
+            } else {
+                log.warn("<!= [Model <- Detect] Kết quả trả về từ detect-service bị rỗng cho model ID: {}", moHinh.getId());
+            }
+        } catch (Exception e) {
+            log.error("[Model x Detect] Lỗi khi gọi sang detect-service cho model {}: {}", moHinh.getId(), e.getMessage());
+        }
+        return tk;
     }
 
     @Override

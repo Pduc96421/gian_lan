@@ -3,10 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 const NAV = [
   { to: '/models', label: 'Quản lý Mô hình' },
   { to: '/monitor', label: 'Giám Sát Thi Cử' },
-]
-const DISABLED = [
-  { label: 'Quản lý Dataset' },
-  { label: 'Cài đặt hệ thống' },
+  { to: '/models/stats', label: 'Thống kê vận hành' },
 ]
 
 export default function Sidebar() {
@@ -22,13 +19,6 @@ export default function Sidebar() {
         >
           {label}
         </Link>
-      ))}
-      <div className="divider" />
-      <div className="sidebar-label">Hệ thống</div>
-      {DISABLED.map(({ label }) => (
-        <span key={label} className="nav-item disabled">
-          {label}
-        </span>
       ))}
     </aside>
   )

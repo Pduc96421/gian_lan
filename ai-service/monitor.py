@@ -59,6 +59,7 @@ VIDEOS_DIR = os.path.join(os.path.dirname(__file__), "videos")
 os.makedirs(VIDEOS_DIR, exist_ok=True)
 
 DETECT_SERVICE_URL = "http://localhost:5002/api/detect/violations"
+DETECT_VIDEO_URL = "http://localhost:5002/api/detect/cameras/{}/video-source"
 
 async def process_frame(frame_b64: str, camera_ca_thi_id: str, model_id: str, violation_detector: ViolationDetector, model_path: str = None, start_time: float = None):
     # Lấy base64 phần data
@@ -128,20 +129,22 @@ async def send_violation_alert(camera_ca_thi_id: str, model_id: str, img_url: st
     }
     try:
         async with httpx.AsyncClient() as client:
+            print(f"==> [AI -> Detect] Đang gửi báo cáo vi phạm [{v_type}] cho Camera: {camera_ca_thi_id}")
             await client.post(DETECT_SERVICE_URL, json=payload, timeout=5.0)
-            print(f"[{camera_ca_thi_id}] Đã gửi báo cáo vi phạm ({v_type}) tới detect-service")
+            print(f"<== [AI <- Detect] Đã lưu vi phạm thành công.")
     except Exception as e:
-        print(f"[{camera_ca_thi_id}] Lỗi gửi báo cáo vi phạm: {e}")
+        print(f"<!= [AI x Detect] Lỗi gửi báo cáo vi phạm: {e}")
 
 
 async def update_video_source(camera_ca_thi_id: str, video_url: str):
     url = DETECT_VIDEO_URL.format(camera_ca_thi_id)
     try:
         async with httpx.AsyncClient() as client:
+            print(f"==> [AI -> Detect] Đang cập nhật link video ca thi cho Camera: {camera_ca_thi_id}")
             await client.put(url, json={"duongDanVideo": video_url}, timeout=5.0)
-            print(f"[{camera_ca_thi_id}] Đã cập nhật đường dẫn video giám sát")
+            print(f"<== [AI <- Detect] Cập nhật video thành công.")
     except Exception as e:
-        print(f"[{camera_ca_thi_id}] Lỗi cập nhật đường dẫn video: {e}")
+        print(f"<!= [AI x Detect] Lỗi cập nhật đường dẫn video: {e}")
 
 @router.websocket("/ws/monitor/{camera_ca_thi_id}/{model_id}")
 async def websocket_monitor(websocket: WebSocket, camera_ca_thi_id: str, model_id: str, path: str = None):

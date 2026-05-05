@@ -6,4 +6,6 @@ export const modelApi = {
   startTraining: (id)           => gatewayAxios.put(`/api/models/${id}/status`),
   cancelTraining:(id)           => gatewayAxios.put(`/api/models/${id}/cancel`),
   saveTrained:   (id, payload)  => gatewayAxios.put(`/api/models/${id}/save-trained`, payload),
+  getAllStats:   ()             => gatewayAxios.get('/api/models/statistics'),
+  getModelStats: (id)           => gatewayAxios.get(`/api/models/${id}/statistics`),
 }

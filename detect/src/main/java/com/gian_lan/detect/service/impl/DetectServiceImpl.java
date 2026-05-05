@@ -10,12 +10,12 @@ import com.gian_lan.detect.repository.CameraCaThiRepository;
 import com.gian_lan.detect.repository.KetQuaNhanDangRepository;
 import com.gian_lan.detect.service.DetectService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DetectServiceImpl implements DetectService {
@@ -26,6 +26,7 @@ public class DetectServiceImpl implements DetectService {
 
     @Override
     public KetQuaNhanDang saveViolation(ViolationRequest request) {
+        log.info("==> [Detect] Lưu vi phạm mới: Model={}, CameraCaThi={}", request.getMoHinhId(), request.getCameraCaThiId());
         CameraCaThi cameraCaThi = cameraCaThiRepository.findById(request.getCameraCaThiId())
                 .orElseThrow(() -> new RuntimeException("CameraCaThi not found"));
 
@@ -70,5 +71,26 @@ public class DetectServiceImpl implements DetectService {
     @Override
     public List<CaThi> getAllCaThi() {
         return caThiRepository.findAll();
+    }
+
+    @Override
+    public List<CaThi> layDanhSachCaThiTheoMoHinh(String modelId) {
+        return ketQuaNhanDangRepository.findDistinctCaThiByMoHinhId(modelId);
+    }
+
+    @Override
+    public Map<String, Object> layThongSoVanHanhMoHinh(String modelId) {
+        log.info("==> [Detect] Đang tính toán thông số vận hành cho Model ID: {}", modelId);
+        Map<String, Object> stats = new HashMap<>();
+        stats.put("soCaThiSuDung", ketQuaNhanDangRepository.countDistinctCaThiByMoHinhId(modelId));
+        stats.put("soPhatHienViPham", ketQuaNhanDangRepository.countByMoHinhId(modelId));
+        log.info("<== [Detect] Trả về thống kê cho Model ID: {} - SoCaThi: {}, SoViPham: {}", 
+                modelId, stats.get("soCaThiSuDung"), stats.get("soPhatHienViPham"));
+        return stats;
+    }
+
+    @Override
+    public List<KetQuaNhanDang> layDanhSachViPhamTheoCameraCaThiVaMoHinh(String cameraCaThiId, String modelId) {
+        return ketQuaNhanDangRepository.findByCameraCaThiIdAndMoHinhId(cameraCaThiId, modelId);
     }
 }

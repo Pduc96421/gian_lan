@@ -12,10 +12,16 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
+
+logging:
+  level:
+    root: INFO
+    org.hibernate: ERROR
+    org.hibernate.SQL: ERROR
 
 eureka:
   client:

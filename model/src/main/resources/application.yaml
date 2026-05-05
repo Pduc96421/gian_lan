@@ -13,7 +13,14 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
-        format_sql: true
+        format_sql: false
+
+logging:
+  level:
+    root: INFO
+    org.hibernate: ERROR
+    org.hibernate.SQL: ERROR
+    com.gian_lan.model.client: DEBUG
 
 server:
   port: 5003

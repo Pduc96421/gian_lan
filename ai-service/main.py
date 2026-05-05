@@ -16,6 +16,11 @@ VIOLATIONS_DIR = os.path.join(os.path.dirname(__file__), "violations")
 os.makedirs(VIOLATIONS_DIR, exist_ok=True)
 app.mount("/violations", StaticFiles(directory=VIOLATIONS_DIR), name="violations")
 
+# Mount thư mục chứa video ca thi
+VIDEOS_DIR = os.path.join(os.path.dirname(__file__), "videos")
+os.makedirs(VIDEOS_DIR, exist_ok=True)
+app.mount("/videos", StaticFiles(directory=VIDEOS_DIR), name="videos")
+
 app.include_router(monitor_router)
 
 app.add_middleware(

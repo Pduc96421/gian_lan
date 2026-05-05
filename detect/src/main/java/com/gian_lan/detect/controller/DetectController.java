@@ -12,6 +12,7 @@ import com.gian_lan.detect.dto.ApiResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/detect")
@@ -52,5 +53,22 @@ public class DetectController {
     @GetMapping("/ca-thi")
     public ApiResponse<List<CaThi>> getAllCaThi() {
         return ApiResponse.ok(detectService.getAllCaThi());
+    }
+
+    @GetMapping("/ca-thi/by-model/{modelId}")
+    public ApiResponse<List<CaThi>> getCaThiByModel(@PathVariable String modelId) {
+        return ApiResponse.ok(detectService.layDanhSachCaThiTheoMoHinh(modelId));
+    }
+
+    @GetMapping("/operational-stats/{modelId}")
+    public ApiResponse<Map<String, Object>> getOperationalStats(@PathVariable String modelId) {
+        return ApiResponse.ok(detectService.layThongSoVanHanhMoHinh(modelId));
+    }
+
+    @GetMapping("/camera-ca-thi/{cameraCaThiId}/violations")
+    public ApiResponse<List<KetQuaNhanDang>> getViolationsByCameraAndModel(
+            @PathVariable String cameraCaThiId,
+            @RequestParam String modelId) {
+        return ApiResponse.ok(detectService.layDanhSachViPhamTheoCameraCaThiVaMoHinh(cameraCaThiId, modelId));
     }
 }

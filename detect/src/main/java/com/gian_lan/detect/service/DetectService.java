@@ -7,6 +7,7 @@ import com.gian_lan.detect.entity.KetQuaNhanDang;
 import com.gian_lan.detect.entity.TrangThaiCaThi;
 
 import java.util.List;
+import java.util.Map;
 
 public interface DetectService {
     KetQuaNhanDang saveViolation(ViolationRequest request);
@@ -15,4 +16,8 @@ public interface DetectService {
     CameraCaThi updateVideoSource(String cameraCaThiId, String videoSource);
     CaThi updateCaThiStatus(String caThiId, TrangThaiCaThi status);
     List<CaThi> getAllCaThi();
+    
+    List<CaThi> layDanhSachCaThiTheoMoHinh(String modelId);
+    Map<String, Object> layThongSoVanHanhMoHinh(String modelId);
+    List<KetQuaNhanDang> layDanhSachViPhamTheoCameraCaThiVaMoHinh(String cameraCaThiId, String modelId);
 }
