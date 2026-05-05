@@ -1,0 +1,23 @@
+# Python
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+
+# AI Data (Tránh đẩy ảnh và video nặng lên Git)
+ai-service/violations/
+ai-service/videos/
+ai-service/*.pt
+ai-service/models/
+
+# Node / Frontend
+node_modules/
+dist/
+.eslintcache
+.DS_Store
+
+# IDE
+.vscode/
+.idea/

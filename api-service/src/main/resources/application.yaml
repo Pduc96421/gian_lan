@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: api-service
+  cloud:
+    gateway:
+      # CORS toàn cục cho tất cả routes
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+      # Tự động discover service qua Eureka
+      discovery:
+        locator:
+          enabled: false  # Dùng routes thủ công cho rõ ràng
+      routes:
+        # ── Model Service ──────────────────────────
+        - id: model-service
+          uri: lb://model-service
+          predicates:
+            - Path=/api/models/**
+
+        # ── Dataset Service ─────────────────────────
+        - id: dataset-service
+          uri: lb://dataset-service
+          predicates:
+            - Path=/api/dataset/**
+
+        # ── Detect Service ─────────────────────────
+        - id: detect-service
+          uri: lb://detect-service
+          predicates:
+            - Path=/api/detect/**
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9999/eureka/
+  instance:
+    prefer-ip-address: true
