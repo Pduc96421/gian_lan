@@ -1,6 +1,7 @@
 package com.gian_lan.model.service.impl;
 
 import com.gian_lan.model.dto.KetQuaTrainRequest;
+import com.gian_lan.model.dto.MauHanhViRequest;
 import com.gian_lan.model.entity.MoHinh;
 import com.gian_lan.model.entity.MoHinhMau;
 import com.gian_lan.model.entity.TrangThaiMoHinh;
@@ -113,10 +114,14 @@ public class MoHinhServiceImpl implements MoHinhService {
         moHinh.setDuongDanMoHinh(request.getDuongDanMoHinh());
         moHinh.setTrangThai(TrangThaiMoHinh.HOAN_THANH);
         
-        if (request.getMauHanhViIds() != null) {
+        if (request.getMauHanhVis() != null) {
             moHinh.getMoHinhMaus().clear();
-            for (String mauHanhViId : request.getMauHanhViIds()) {
-                MoHinhMau mau = new MoHinhMau(UUID.randomUUID().toString(), "TRAIN", mauHanhViId);
+            for (MauHanhViRequest mauReq : request.getMauHanhVis()) {
+                MoHinhMau mau = new MoHinhMau(
+                    UUID.randomUUID().toString(), 
+                    mauReq.getType(), 
+                    mauReq.getId()
+                );
                 moHinh.getMoHinhMaus().add(mau);
             }
         }

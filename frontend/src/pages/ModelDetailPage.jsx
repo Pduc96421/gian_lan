@@ -149,11 +149,22 @@ export default function ModelDetailPage() {
   const handleSave = async () => {
     setShowModal(false)
     try {
+      const allSelected = Array.from(selected)
+      const shuffled = [...allSelected].sort(() => 0.5 - Math.random())
+      const splitIdx = Math.round(shuffled.length * 0.8)
+      const trainIds = shuffled.slice(0, splitIdx)
+      const testIds  = shuffled.slice(splitIdx)
+
+      const mauHanhVis = [
+        ...trainIds.map(id => ({ id, type: 'TRAIN' })),
+        ...testIds.map(id => ({ id, type: 'TEST' }))
+      ]
+
       const updated = await modelApi.saveTrained(id, {
         accuracy: result.accuracy, precision: result.precision,
         recall: result.recall, f1Score: result.f1Score,
         duongDanMoHinh: result.modelPath,
-        mauHanhViIds: Array.from(selected)
+        mauHanhVis
       })
       setModel(updated)
       

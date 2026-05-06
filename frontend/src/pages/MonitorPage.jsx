@@ -102,7 +102,7 @@ export default function MonitorPage() {
 
     // Lấy thông tin model để có đường dẫn
     const modelObj = models.find(m => String(m.id) === String(selectedModel))
-    const modelPath = modelObj?.duongDan || ''
+    const modelPath = modelObj?.duongDanMoHinh || ''
 
     connect(selectedCameraCaThi, selectedModel, modelPath, {
       onOpen: () => {
@@ -134,9 +134,6 @@ export default function MonitorPage() {
           setElapsedTime(prev => prev + 1)
         }, 1000)
 
-        // Poll vi phạm (Đã chuyển sang dùng WebSocket để lấy vi phạm Real-time cho phiên này)
-        // pollInterval.current = [timer] 
-
         pollInterval.current = [timer]
       },
       onResult: (data) => {
@@ -145,16 +142,14 @@ export default function MonitorPage() {
         // Nếu có vi phạm mới từ AI gửi về
         if (data.violations && data.violations.length > 0) {
           setViolations(prev => {
-            // Chuyển đổi dữ liệu từ AI sang định dạng FE cần hiển thị
             const newViolations = data.violations.map(v => ({
-              id: Date.now() + Math.random(), // ID tạm thời
+              id: Date.now() + Math.random(),
               hanhViGianLan: v.type,
               chiTiet: v.details,
-              hinhAnhMinhChungUrl: v.image_url, // Lấy trực tiếp từ AI gửi về
+              hinhAnhMinhChungUrl: v.image_url,
               thoiDiemPhatHien: new Date().toISOString()
             }))
 
-            // Chỉ thêm những cái chưa có (tránh trùng lặp trong một đợt gửi)
             return [...newViolations, ...prev]
           })
         }

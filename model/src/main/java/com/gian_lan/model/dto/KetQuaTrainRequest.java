@@ -10,5 +10,5 @@ public class KetQuaTrainRequest {
     private float recall;
     private float f1Score;
     private String duongDanMoHinh;
-    private List<String> mauHanhViIds;
+    private List<MauHanhViRequest> mauHanhVis;
 }

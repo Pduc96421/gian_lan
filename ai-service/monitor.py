@@ -31,7 +31,6 @@ def get_object_detector(model_path: str = None):
         model_path = "yolov8n.pt"
     
     if model_path not in detectors_cache:
-        # Đường dẫn tuyệt đối đến file (giả định path từ FE là /models/filename.pt hoặc filename.pt)
         path = model_path.lstrip("/")
         full_path = os.path.join(os.path.dirname(__file__), path)
         
