@@ -5,6 +5,7 @@ import java.util.List;
 
 @Data
 public class KetQuaTrainRequest {
+    private String id;
     private float accuracy;
     private float precision;
     private float recall;

@@ -77,14 +77,11 @@ async def process_frame(frame_b64: str, camera_ca_thi_id: str, model_id: str, vi
     if not detector:
         return None, 0, 0, img, []
 
-    # 1. Phát hiện objects
     objects = detector.detect_objects(img)
     
-    # 2. Kiểm tra vi phạm (Đã bao gồm kiểm tra camera bị che bên trong)
     current_time_sec = time.time()
     violations = violation_detector.check_violations(objects, img, current_time_sec)
     
-    # 3. Vẽ kết quả lên ảnh (Chỉ vẽ nếu cần lưu ảnh vi phạm, không gửi về FE nữa)
     if violations:
         img_drawn = detector.draw_detections(img.copy(), objects)
         
@@ -109,7 +106,6 @@ async def process_frame(frame_b64: str, camera_ca_thi_id: str, model_id: str, vi
             violation_url = f"/violations/{filename}"
             # Thêm thông tin ảnh để FE hiển thị trực tiếp
             v['image_url'] = violation_url
-            # Thêm timestamp vào details
             details_with_time = f"[{timestamp_str}] {v['details']}"
             asyncio.create_task(send_violation_alert(camera_ca_thi_id, model_id, violation_url, v['type'], details_with_time))
 
@@ -166,7 +162,6 @@ async def websocket_monitor(websocket: WebSocket, camera_ca_thi_id: str, model_i
 
             if "frame" in data:
                 frame_b64 = data["frame"]
-                # print(f"[{camera_ca_thi_id}] Đang xử lý frame...")
                 out_b64, persons, phones, processed_img, current_violations = await process_frame(frame_b64, camera_ca_thi_id, model_id, violation_detector, path, start_time)
                 
                 # Khởi tạo VideoWriter nếu chưa có

@@ -80,12 +80,9 @@ public class DetectServiceImpl implements DetectService {
 
     @Override
     public Map<String, Object> layThongSoVanHanhMoHinh(String modelId) {
-        log.info("==> [Detect] Đang tính toán thông số vận hành cho Model ID: {}", modelId);
         Map<String, Object> stats = new HashMap<>();
         stats.put("soCaThiSuDung", ketQuaNhanDangRepository.countDistinctCaThiByMoHinhId(modelId));
         stats.put("soPhatHienViPham", ketQuaNhanDangRepository.countByMoHinhId(modelId));
-        log.info("<== [Detect] Trả về thống kê cho Model ID: {} - SoCaThi: {}, SoViPham: {}", 
-                modelId, stats.get("soCaThiSuDung"), stats.get("soPhatHienViPham"));
         return stats;
     }
 

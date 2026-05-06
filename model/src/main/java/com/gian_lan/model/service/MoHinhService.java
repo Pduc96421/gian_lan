@@ -11,7 +11,7 @@ public interface MoHinhService {
     Optional<MoHinh> layChiTietMoHinh(String id);
     MoHinh batDauTrain(String id);
     MoHinh huyTrain(String id);
-    MoHinh luuMoHinhSauTrain(String id, KetQuaTrainRequest request);
+    MoHinh luuMoHinhSauTrain(KetQuaTrainRequest request);
     
     List<TkMoHinh> layThongKeTatCaMoHinh();
     Optional<TkMoHinh> layThongKeChiTiet(String id);

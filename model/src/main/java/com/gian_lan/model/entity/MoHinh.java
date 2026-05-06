@@ -24,7 +24,6 @@ public class MoHinh {
     @Column(nullable = false)
     private float accuracy;
 
-    // "precision" là từ khoá MySQL → đặt tên cột khác
     @Column(name = "ket_qua_precision", nullable = false)
     private float precision;
 

@@ -53,7 +53,6 @@ public class MoHinhServiceImpl implements MoHinhService {
         try {
             log.info("==> [Model -> Detect] Bắt đầu gọi detect-service để lấy thống kê vận hành cho model ID: {}", moHinh.getId());
             
-            // Gọi detect-service qua Feign Client
             ApiResponse<Map<String, Object>> response = detectServiceClient.getOperationalStats(moHinh.getId());
             
             if (response != null && response.getResult() != null) {
@@ -102,9 +101,9 @@ public class MoHinhServiceImpl implements MoHinhService {
     }
 
     @Override
-    public MoHinh luuMoHinhSauTrain(String id, KetQuaTrainRequest request) {
-        MoHinh moHinh = moHinhRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy mô hình: " + id));
+    public MoHinh luuMoHinhSauTrain(KetQuaTrainRequest request) {
+        MoHinh moHinh = moHinhRepository.findById(request.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy mô hình: " + request.getId()));
         if (moHinh.getTrangThai() != TrangThaiMoHinh.DANG_TRAIN)
             throw new IllegalStateException("Mô hình phải đang ở trạng thái Đang huấn luyện");
         moHinh.setAccuracy(request.getAccuracy());

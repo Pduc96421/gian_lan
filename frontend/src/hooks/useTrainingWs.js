@@ -17,10 +17,10 @@ export function useTrainingWs() {
       let evt
       try { evt = JSON.parse(data) } catch { return }
       switch (evt.type) {
-        case 'progress':  callbacks.onProgress?.(evt);  break
+        case 'progress': callbacks.onProgress?.(evt); break
         case 'completed': callbacks.onCompleted?.(evt); break
         case 'cancelled': callbacks.onCancelled?.(evt); break
-        case 'error':     callbacks.onError?.(evt);     break
+        case 'error': callbacks.onError?.(evt); break
       }
     }
 

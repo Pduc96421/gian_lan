@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MauHanhViRequest {
     private String id;
-    private String type; // TRAIN hoặc TEST
+    private String type;
 }

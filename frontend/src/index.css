@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
   --primary: #2563eb;
@@ -54,7 +54,7 @@ body {
   border-radius: 99px;
 }
 
-/* ── Layout ── */
+/* â”€â”€ Layout â”€â”€ */
 .app-header {
   position: fixed;
   top: 0;
@@ -184,7 +184,7 @@ body {
   min-height: calc(100vh - var(--header-h));
 }
 
-/* ── Page header ── */
+/* â”€â”€ Page header â”€â”€ */
 .page-hdr {
   display: flex;
   align-items: flex-start;
@@ -222,7 +222,7 @@ body {
   margin-top: 3px;
 }
 
-/* ── Cards ── */
+/* â”€â”€ Cards â”€â”€ */
 .card {
   background: var(--card);
   border: 1px solid var(--border);
@@ -248,7 +248,7 @@ body {
   padding: 20px;
 }
 
-/* ── Stats ── */
+/* â”€â”€ Stats â”€â”€ */
 .stats-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -284,7 +284,7 @@ body {
   opacity: .5;
 }
 
-/* ── Search ── */
+/* â”€â”€ Search â”€â”€ */
 .search-wrap {
   position: relative;
 }
@@ -316,7 +316,7 @@ body {
   box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
 }
 
-/* ── Buttons ── */
+/* â”€â”€ Buttons â”€â”€ */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -381,7 +381,7 @@ body {
   pointer-events: none;
 }
 
-/* ── Table ── */
+/* â”€â”€ Table â”€â”€ */
 .tbl-wrap {
   overflow-x: auto;
 }
@@ -421,7 +421,7 @@ tbody td {
   font-size: 13.5px;
 }
 
-/* ── Badge ── */
+/* â”€â”€ Badge â”€â”€ */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -471,7 +471,7 @@ tbody td {
   }
 }
 
-/* ── Metrics ── */
+/* â”€â”€ Metrics â”€â”€ */
 .metric-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -502,7 +502,7 @@ tbody td {
   margin-top: 4px;
 }
 
-/* ── Dataset grid ── */
+/* â”€â”€ Dataset grid â”€â”€ */
 .dataset-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -549,7 +549,7 @@ tbody td {
   margin-top: 6px;
 }
 
-/* ── Progress ── */
+/* â”€â”€ Progress â”€â”€ */
 .prog-hdr {
   display: flex;
   align-items: center;
@@ -596,7 +596,7 @@ tbody td {
   margin-top: 4px;
 }
 
-/* ── Epoch config ── */
+/* â”€â”€ Epoch config â”€â”€ */
 .epoch-config {
   display: flex;
   align-items: center;
@@ -631,7 +631,7 @@ tbody td {
   box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
 }
 
-/* ── Result ── */
+/* â”€â”€ Result â”€â”€ */
 .result-box {
   background: var(--success-lt);
   border: 1px solid #bbf7d0;
@@ -647,7 +647,7 @@ tbody td {
   margin-bottom: 14px;
 }
 
-/* ── Modal ── */
+/* â”€â”€ Modal â”€â”€ */
 .overlay {
   position: fixed;
   inset: 0;
@@ -686,7 +686,7 @@ tbody td {
   justify-content: flex-end;
 }
 
-/* ── Misc ── */
+/* â”€â”€ Misc â”€â”€ */
 .spinner {
   width: 18px;
   height: 18px;
@@ -788,4 +788,14 @@ code {
   background: var(--bg);
   padding: 2px 6px;
   border-radius: 4px;
-}
+}
+
+/* Soft Background Utilities */
+.bg-primary-soft { background-color: var(--primary-lt); }
+.bg-success-soft { background-color: var(--success-lt); }
+.bg-warning-soft { background-color: var(--warning-lt); }
+.bg-danger-soft { background-color: var(--danger-lt); }
+.text-primary { color: var(--primary); }
+.text-success { color: var(--success); }
+.text-warning { color: var(--warning); }
+.text-danger { color: var(--danger); }
